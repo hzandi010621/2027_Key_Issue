@@ -598,7 +598,20 @@ table.tbl{width:100%;border-collapse:collapse;min-width:1100px}
 </style>
 <script id="authGatePrecheck">
   try {
-    if (sessionStorage.getItem("keyIssue2027Auth") === "verified") {
+    // 인증 상태를 현재 탭에만 묶습니다.
+    // 새로고침 시에는 유지되지만, 새 탭/새 창에서는 별도로 인증해야 합니다.
+    const AUTH_TAB_PREFIX = "keyIssue2027Tab:";
+    let authTabId = window.name.startsWith(AUTH_TAB_PREFIX)
+      ? window.name.slice(AUTH_TAB_PREFIX.length)
+      : "";
+
+    if (!authTabId) {
+      authTabId = (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`);
+      window.name = AUTH_TAB_PREFIX + authTabId;
+    }
+
+    window.__keyIssue2027AuthKey = `keyIssue2027Auth:${authTabId}`;
+    if (sessionStorage.getItem(window.__keyIssue2027AuthKey) === "verified") {
       document.documentElement.classList.add("auth-ok");
     }
   } catch (e) {}
@@ -619,7 +632,7 @@ table.tbl{width:100%;border-collapse:collapse;min-width:1100px}
     </div>
     <button class="auth-submit" id="authSubmit" type="submit">접속하기</button>
     <div class="auth-error" id="authError" role="alert" aria-live="polite"></div>
-    <div class="auth-foot">인증 후에는 현재 브라우저 탭을 닫기 전까지 새로고침해도 다시 비밀번호를 묻지 않습니다.</div>
+    <div class="auth-foot">새로고침 시에는 인증이 유지되며, 사이트 탭을 닫은 뒤 다시 접속하면 비밀번호를 다시 입력해야 합니다.</div>
   </form>
 </div>
 
@@ -1410,7 +1423,10 @@ render();
   }
 
   function unlock() {
-    try { sessionStorage.setItem("keyIssue2027Auth", "verified"); } catch (e) {}
+    try {
+      const key = window.__keyIssue2027AuthKey;
+      if (key) sessionStorage.setItem(key, "verified");
+    } catch (e) {}
     document.documentElement.classList.add("auth-ok");
     input.value = "";
     error.textContent = "";
