@@ -552,8 +552,77 @@ table.tbl{width:100%;border-collapse:collapse;min-width:1100px}
   .search{flex-basis:100%;margin-left:0}
 }
 </style>
+
+<!-- ===== Password Gate (added 2026-10-12) ===== -->
+<style id="authGateStyle">
+  html:not(.auth-ok) body > *:not(#authGate):not(script) { display:none !important; }
+  html.auth-ok #authGate { display:none !important; }
+  html:not(.auth-ok), html:not(.auth-ok) body { min-height:100%; }
+  html:not(.auth-ok) body { margin:0; background:#F7F8FA; }
+  #authGate{
+    min-height:100vh; min-height:100dvh; display:flex; align-items:center; justify-content:center;
+    padding:24px; background:
+      radial-gradient(circle at 15% 10%, rgba(43,76,126,.10), transparent 32%),
+      radial-gradient(circle at 90% 85%, rgba(30,58,95,.08), transparent 30%),
+      #F7F8FA;
+    font-family:Pretendard,"Pretendard Variable",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+    color:#111827;
+  }
+  .auth-card{
+    width:min(430px,100%); background:#fff; border:1px solid #E5E7EB; border-radius:16px;
+    padding:34px 34px 30px; box-shadow:0 18px 55px rgba(17,24,39,.10);
+  }
+  .auth-eyebrow{font-size:11px;font-weight:800;letter-spacing:.13em;color:#2B4C7E;text-transform:uppercase;margin-bottom:10px}
+  .auth-card h1{margin:0;font-size:27px;line-height:1.25;letter-spacing:-.025em;font-weight:800}
+  .auth-desc{margin:9px 0 24px;color:#6B7280;font-size:13px;line-height:1.55}
+  .auth-label{display:block;margin-bottom:7px;font-size:12px;font-weight:700;color:#374151}
+  .auth-input-wrap{position:relative}
+  #authPassword{
+    width:100%; height:46px; box-sizing:border-box; border:1px solid #D1D5DB; border-radius:9px;
+    padding:0 44px 0 13px; font:inherit; font-size:14px; outline:none; background:#fff; color:#111827;
+    transition:border-color .15s,box-shadow .15s;
+  }
+  #authPassword:focus{border-color:#2B4C7E;box-shadow:0 0 0 3px rgba(30,58,95,.14)}
+  #authPassword[aria-invalid="true"]{border-color:#B42318;box-shadow:0 0 0 3px rgba(180,35,24,.10)}
+  .auth-toggle{position:absolute;right:7px;top:50%;transform:translateY(-50%);width:32px;height:32px;border:0;border-radius:7px;background:transparent;color:#6B7280;cursor:pointer;font-size:11px;font-weight:700}
+  .auth-toggle:hover{background:#F3F4F6;color:#111827}
+  .auth-submit{
+    width:100%;height:44px;margin-top:12px;border:0;border-radius:9px;background:#1E3A5F;color:#fff;
+    font:inherit;font-size:13.5px;font-weight:800;cursor:pointer;transition:background .15s,transform .08s;
+  }
+  .auth-submit:hover{background:#2B4C7E}.auth-submit:active{transform:translateY(1px)}
+  .auth-submit:disabled{opacity:.6;cursor:default}
+  .auth-error{min-height:19px;margin-top:9px;font-size:12px;color:#B42318;font-weight:600}
+  .auth-foot{margin-top:20px;padding-top:16px;border-top:1px solid #F0F1F3;font-size:11.5px;color:#9CA3AF;line-height:1.5}
+  @media (max-width:520px){.auth-card{padding:28px 22px 24px;border-radius:13px}.auth-card h1{font-size:24px}}
+</style>
+<script id="authGatePrecheck">
+  try {
+    if (sessionStorage.getItem("keyIssue2027Auth") === "verified") {
+      document.documentElement.classList.add("auth-ok");
+    }
+  } catch (e) {}
+</script>
+
 </head>
 <body>
+
+<div id="authGate" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+  <form class="auth-card" id="authForm" autocomplete="off">
+    <div class="auth-eyebrow">AUTHORIZED ACCESS</div>
+    <h1 id="authTitle">2027 주요 이슈 캘린더</h1>
+    <p class="auth-desc">비밀번호를 입력하면 대시보드에 접속할 수 있습니다.</p>
+    <label class="auth-label" for="authPassword">Password</label>
+    <div class="auth-input-wrap">
+      <input id="authPassword" type="password" inputmode="text" autocomplete="current-password" placeholder="비밀번호 입력" aria-describedby="authError" autofocus>
+      <button class="auth-toggle" id="authToggle" type="button" aria-label="비밀번호 표시">보기</button>
+    </div>
+    <button class="auth-submit" id="authSubmit" type="submit">접속하기</button>
+    <div class="auth-error" id="authError" role="alert" aria-live="polite"></div>
+    <div class="auth-foot">인증 후에는 현재 브라우저 탭을 닫기 전까지 새로고침해도 다시 비밀번호를 묻지 않습니다.</div>
+  </form>
+</div>
+
 
 <header class="header">
   <div class="wrap">
@@ -1321,5 +1390,78 @@ document.addEventListener("keydown", ev => {
 
 render();
 </script>
+
+<script id="authGateScript">
+(() => {
+  const AUTH_HASH = "576077e8597c153464386486162997be28ff4cd6c15f91baa25705051c83cf48";
+  const form = document.getElementById("authForm");
+  if (!form) return;
+
+  const input = document.getElementById("authPassword");
+  const error = document.getElementById("authError");
+  const submit = document.getElementById("authSubmit");
+  const toggle = document.getElementById("authToggle");
+
+  const toHex = buffer => Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2, "0")).join("");
+  async function sha256(text) {
+    const data = new TextEncoder().encode(text);
+    const digest = await crypto.subtle.digest("SHA-256", data);
+    return toHex(digest);
+  }
+
+  function unlock() {
+    try { sessionStorage.setItem("keyIssue2027Auth", "verified"); } catch (e) {}
+    document.documentElement.classList.add("auth-ok");
+    input.value = "";
+    error.textContent = "";
+  }
+
+  toggle.addEventListener("click", () => {
+    const showing = input.type === "text";
+    input.type = showing ? "password" : "text";
+    toggle.textContent = showing ? "보기" : "숨김";
+    toggle.setAttribute("aria-label", showing ? "비밀번호 표시" : "비밀번호 숨기기");
+    input.focus();
+  });
+
+  input.addEventListener("input", () => {
+    input.removeAttribute("aria-invalid");
+    error.textContent = "";
+  });
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!input.value) {
+      input.setAttribute("aria-invalid", "true");
+      error.textContent = "비밀번호를 입력해주세요.";
+      input.focus();
+      return;
+    }
+    submit.disabled = true;
+    submit.textContent = "확인 중…";
+    try {
+      const hash = await sha256(input.value);
+      if (hash === AUTH_HASH) {
+        unlock();
+      } else {
+        input.setAttribute("aria-invalid", "true");
+        error.textContent = "비밀번호가 올바르지 않습니다.";
+        input.select();
+      }
+    } catch (e) {
+      error.textContent = "이 브라우저에서는 인증 기능을 사용할 수 없습니다.";
+    } finally {
+      submit.disabled = false;
+      submit.textContent = "접속하기";
+    }
+  });
+
+  if (document.documentElement.classList.contains("auth-ok")) {
+    const gate = document.getElementById("authGate");
+    if (gate) gate.setAttribute("aria-hidden", "true");
+  }
+})();
+</script>
+
 </body>
 </html>
