@@ -576,6 +576,23 @@ table.tbl{width:100%;border-collapse:collapse;min-width:1100px}
 .ag-box.empty::after{display:none}
 .ag-box.empty .ag-l{color:var(--text-3)}
 .ag-box.empty .ag-n{font-size:14px;font-weight:600;color:var(--text-3)}
+
+.ag-edit-btn{margin-top:12px;height:30px;padding:0 10px;border-radius:7px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);color:#fff;font-size:12px;font-weight:700}
+.ag-edit-btn:hover{background:rgba(255,255,255,.22)}
+.ag-box.empty .ag-edit-btn{background:var(--surface);border-color:var(--border-2);color:var(--accent)}
+.ag-editor{border:1px solid var(--border);border-radius:10px;padding:14px;background:var(--surface-2);margin-bottom:14px}
+.ag-editor .ae-label{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--text-3);margin-bottom:8px}
+.ag-editor input{width:100%;height:38px;border:1px solid var(--border-2);border-radius:8px;background:#fff;padding:0 11px;outline:none;margin-bottom:8px}
+.ag-editor input:focus{border-color:var(--accent-2);box-shadow:0 0 0 3px var(--accent-ring)}
+.ag-editor .ae-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+.ag-editor .ae-actions{display:flex;gap:8px;align-items:center;margin-top:3px}
+.ag-editor .ae-save,.ag-editor .ae-cancel{height:34px;border-radius:7px;padding:0 13px;font-size:12px;font-weight:700}
+.ag-editor .ae-save{background:var(--accent);color:#fff}
+.ag-editor .ae-save:disabled{opacity:.5;cursor:default}
+.ag-editor .ae-cancel{border:1px solid var(--border);background:#fff;color:var(--text-2)}
+.ag-editor .ae-msg{font-size:11.5px;color:var(--text-3);margin-left:auto}
+.ag-editor .ae-msg.err{color:#B42318}
+.ag-sync-note{font-size:10.5px;color:var(--text-4);margin-top:7px}
 .fields{display:grid;grid-template-columns:96px minmax(0,1fr);gap:9px 14px;font-size:13px}
 .fields dt{color:var(--text-3);font-weight:600;font-size:12px;padding-top:1px}
 .fields dd{margin:0;color:var(--text);min-width:0;overflow-wrap:anywhere}
@@ -1379,6 +1396,71 @@ function renderTable() {
 }
 
 /* =========================================================================
+   AGENCY LIVE DB — Google Apps Script / Google Sheets
+   ========================================================================= */
+const AGENCY_API_URL = "https://script.google.com/macros/s/AKfycby5LlVmMg6MyV7cdNeSfUQ4MlUaujg9cfg2xroi8qDdB-2jBswt0X1k_GXZsBmm0aIhGQ/exec";
+let agencyEditingId = null;
+function agencyApiReady(){ return /^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec(?:\?.*)?$/.test(AGENCY_API_URL); }
+function agencyJsonp(params){
+  return new Promise((resolve,reject)=>{
+    if(!agencyApiReady()) return reject(new Error("대행사 DB가 아직 연결되지 않았습니다."));
+    const cb = `__luuxAgencyCb_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+    const sc = document.createElement("script");
+    const timer = setTimeout(()=>{ cleanup(); reject(new Error("대행사 DB 응답 시간이 초과되었습니다.")); },10000);
+    const cleanup=()=>{ clearTimeout(timer); try{delete window[cb]}catch(e){window[cb]=undefined} sc.remove(); };
+    window[cb]=(data)=>{ cleanup(); resolve(data); };
+    const qs = new URLSearchParams({...params,callback:cb,_:Date.now()});
+    sc.src = `${AGENCY_API_URL}${AGENCY_API_URL.includes("?")?"&":"?"}${qs.toString()}`;
+    sc.onerror=()=>{ cleanup(); reject(new Error("대행사 DB 연결에 실패했습니다.")); };
+    document.head.appendChild(sc);
+  });
+}
+function applyAgencyOverride(row){
+  const e = BY_ID.get(+row.issue_id); if(!e) return;
+  const a = String(row.agency ?? "").trim();
+  if(a) e.agency = a; else delete e.agency;
+  e._agencyUpdatedAt = row.updated_at || "";
+  e._agencyUpdatedBy = row.updated_by || "";
+  derive(e);
+}
+async function loadAgencyOverrides(){
+  if(!agencyApiReady()) return;
+  try{
+    const r=await agencyJsonp({action:"list"});
+    if(!r?.ok) throw new Error(r?.error||"대행사 DB를 불러오지 못했습니다.");
+    (r.rows||[]).forEach(applyAgencyOverride);
+    schedule();
+  }catch(err){ console.warn("Agency DB:",err); }
+}
+function agencyEditorHTML(e){
+  const names=[...new Set(events.flatMap(agenciesFor))].sort((a,b)=>a.localeCompare(b,"ko"));
+  return `<div class="ag-editor" data-agency-editor="${e.id}">
+    <div class="ae-label">담당 대행사 수정</div>
+    <input id="agencyEditInput" list="agencyNameList" value="${esc(e.agency||"")}" placeholder="대행사명 입력 · 비워두면 미확인으로 저장">
+    <datalist id="agencyNameList">${names.map(x=>`<option value="${esc(x)}"></option>`).join("")}</datalist>
+    <div class="ae-row"><input id="agencyEditorName" placeholder="수정자 이름 (선택)"><input id="agencyEditorPassword" type="password" placeholder="수정 비밀번호"></div>
+    <div class="ae-actions"><button class="ae-save" data-action="save-agency" data-edit-id="${e.id}">저장</button><button class="ae-cancel" data-action="cancel-agency" data-edit-id="${e.id}">취소</button><span class="ae-msg" id="agencySaveMsg"></span></div>
+    <div class="ag-sync-note">저장된 대행사 정보는 Google Sheet에 기록되며 다른 사용자가 새로고침하면 동일하게 반영됩니다.</div>
+  </div>`;
+}
+async function saveAgencyFromEditor(id){
+  const e=BY_ID.get(+id); if(!e) return;
+  const input=$("agencyEditInput"), pw=$("agencyEditorPassword"), who=$("agencyEditorName"), msg=$("agencySaveMsg");
+  if(!agencyApiReady()){ msg.textContent="Apps Script URL 연결이 먼저 필요합니다."; msg.className="ae-msg err"; return; }
+  if(!pw.value){ msg.textContent="수정 비밀번호를 입력해주세요."; msg.className="ae-msg err"; pw.focus(); return; }
+  const btn=document.querySelector('[data-action="save-agency"]'); if(btn){btn.disabled=true;btn.textContent="저장 중…";}
+  msg.textContent=""; msg.className="ae-msg";
+  try{
+    const r=await agencyJsonp({action:"save",issue_id:e.id,company:e.company,issue_title:e.title,agency:input.value.trim(),updated_by:who.value.trim(),password:pw.value});
+    if(!r?.ok) throw new Error(r?.error||"저장에 실패했습니다.");
+    applyAgencyOverride(r.row||{issue_id:e.id,agency:input.value.trim()});
+    agencyEditingId=null;
+    openDetail(e.id,false);
+    schedule();
+  }catch(err){ msg.textContent=err.message; msg.className="ae-msg err"; if(btn){btn.disabled=false;btn.textContent="저장";} }
+}
+
+/* =========================================================================
    DETAIL PANEL
    ========================================================================= */
 const bullets = s => {
@@ -1398,13 +1480,16 @@ function openDetail(id, push = true) {
     <div class="p-when"><div><small>일정</small><b>${esc(e._short)}</b></div><div><small>분기</small><b>${qLabel}</b></div>${e._bucket ? `<div><small>시기 구분</small><b>${esc(e._bucket)}</b></div>` : ""}</div>`;
   const O = [["LUUX 제안 포인트", e.opportunity], ["LUUX 연계 포인트", e.linkPoint], ["과거 캠페인", e.pastCampaign]].filter(x => x[1]);
   let b = "";
-  // 대행사 — 별도 강조 박스
-  if (e.agency) {
+  // 대행사 — Google Sheet 공동 수정 지원
+  if (agencyEditingId === e.id) {
+    b += agencyEditorHTML(e);
+  } else if (e.agency) {
     const types = e.agencyTypes || [];
     b += `<div class="ag-box"><div class="ag-l">담당 대행사</div><div class="ag-n">${esc(e.agency)}</div>
-      ${types.length ? `<div class="ag-t">${types.map(x => `<span>${esc(x)}</span>`).join("")}</div>` : `<div class="ag-none">대행 유형 미기재</div>`}</div>`;
+      ${types.length ? `<div class="ag-t">${types.map(x => `<span>${esc(x)}</span>`).join("")}</div>` : `<div class="ag-none">대행 유형 미기재</div>`}
+      <button class="ag-edit-btn" data-action="edit-agency" data-edit-id="${e.id}">✎ 수정</button></div>`;
   } else {
-    b += `<div class="ag-box empty"><div class="ag-l">담당 대행사</div><div class="ag-n">확인된 대행사 없음</div></div>`;
+    b += `<div class="ag-box empty"><div class="ag-l">담당 대행사</div><div class="ag-n">확인된 대행사 없음</div><button class="ag-edit-btn" data-action="edit-agency" data-edit-id="${e.id}">+ 대행사 추가</button></div>`;
   }
   if (O.length) {
     b += `<div class="opp-box"><div class="oh">💡 SALES OPPORTUNITY</div>${O.map(([l, v]) => `<div class="og"><div class="ol">${l}</div><div class="ov">${bullets(v)}</div></div>`).join("")}</div>`;
@@ -1437,7 +1522,7 @@ function openList(title, arr, push = true) {
   showPanel();
 }
 function showPanel() { hideTip(); $("panel").classList.add("on"); $("overlay").classList.add("on"); $("panel").setAttribute("aria-hidden", "false"); }
-function closePanel() { $("panel").classList.remove("on"); $("overlay").classList.remove("on"); $("panel").setAttribute("aria-hidden", "true"); panelStack = []; }
+function closePanel() { agencyEditingId=null; $("panel").classList.remove("on"); $("overlay").classList.remove("on"); $("panel").setAttribute("aria-hidden", "true"); panelStack = []; }
 
 /* =========================================================================
    TOOLTIP
@@ -1488,6 +1573,9 @@ document.addEventListener("click", ev => {
   if (d.action === "reset") return resetAll();
   if (d.action === "open-list") return toggleList(true);
   if (d.action === "close-list") return toggleList(false);
+  if (d.action === "edit-agency") { agencyEditingId=+d.editId; return openDetail(d.editId,false); }
+  if (d.action === "cancel-agency") { agencyEditingId=null; return openDetail(d.editId,false); }
+  if (d.action === "save-agency") return saveAgencyFromEditor(d.editId);
   if (d.view) { state.view = d.view; document.querySelectorAll("#viewSeg button").forEach(b => b.classList.toggle("on", b === t));
     if (d.view === "month" && state.period[0] !== "m" && state.period !== "pre12" && state.period !== "unsure") { state.prevPeriod = state.period; state.period = "m1"; }
     else if (d.view !== "month" && state.prevPeriod !== undefined) { state.period = state.prevPeriod; state.prevPeriod = undefined; }
@@ -1543,6 +1631,7 @@ document.addEventListener("keydown", ev => {
 });
 
 render();
+loadAgencyOverrides();
 </script>
 
 <script id="authGateScript">
