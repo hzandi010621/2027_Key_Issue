@@ -98,7 +98,6 @@ const events = [
   {"id": 70, "company": "사단법인 한국교회총연합", "industry": "행사·공공", "industryRaw": "행사·공공", "title": "부활절 퍼레이드 (광화문 광장 일대) — 연례행사, 2027년 진행 가능성 높음", "issueType": "대형 행사 / 이벤트", "scope": "행사", "periodRaw": "매년 4월 초중순 토요일", "periodType": "month", "month": 4, "quarter": "Q2", "half": "H1", "sources": [{"label": "출처 기사", "url": "https://www.k-easter.com/"}], "sheets": ["최종정리"]},
   {"id": 71, "company": "서울특별시", "industry": "행사·공공", "industryRaw": "행사·공공", "title": "한강 불빛 공연 드론라이트쇼 — 드론 1,200~2,000대 (뚝섬·여의도·잠실한강공원)", "issueType": "대형 행사 / 이벤트", "scope": "행사", "periodRaw": "상·하반기 각 5회", "periodType": "recurring", "recurLabel": "상·하반기 각 5회", "description": "• 최대 2,000대 규모 드론 활용, 회차별 IP 협업(BT21·스타워즈·마블 등)\n• 2026년 상반기 12.5만 명 방문, 외국인 비율 34.6%", "organizer": "서울특별시", "location": "뚝섬·여의도·잠실 한강공원", "agency": "이너스커뮤니티", "agencyTypes": ["기획 및 제작대행"], "linkPoint": "• 드론쇼 협업 IP·기업 대상 '한강 하늘 + 광화문 LUUX' 동시 노출 패키지\n• 공연 당일 동일 연출 LUUX 동시 송출 + QR 참여 이벤트", "sheets": ["최종정리", "이전 워크북 (특징·연계 포인트·장소 보강)"]},
   {"id": 72, "company": "주한영국대사관", "industry": "행사·공공", "industryRaw": "행사·공공", "title": "G20 맨체스터 정상회의", "issueType": "대형 행사 / 이벤트", "scope": "행사", "periodRaw": "미정", "periodType": "tbd", "sheets": ["최종정리"]},
-  {"id": 73, "company": "아시아 축구 연맹", "industry": "행사·공공", "industryRaw": "행사·공공", "title": "2027 아시안컵", "issueType": "스포츠 / 문화", "scope": "행사", "periodRaw": "2027. 1. 7. – 2027. 2. 5", "periodType": "range", "month": 1, "day": 7, "endMonth": 2, "endDay": 5, "quarter": "Q1", "half": "H1", "sheets": ["최종정리"]},
   {"id": 74, "company": "엔씨소프트", "industry": "게임", "industryRaw": "게임·콘텐츠·엔터", "title": "'호라이즌 스틸 프론티어스' 출시", "issueTitleRaw": "호라이즌 스틸 프론티어스' 출시", "issueType": "게임 / 콘텐츠 출시", "scope": "기업", "periodRaw": "2027년 상반기 목표", "periodType": "half", "half": "H1", "description": "글로벌 인기 Horizon IP 기반 MMORPG.\n원작의 기계 생명체 사냥·헌팅 액션에 대규모 전투와 MMO 시스템을 결합.\nPC·모바일 크로스플랫폼 글로벌 타이틀", "content": "호라이즌 스틸 프론티어스 (Horizon Steel Frontiers)", "agency": "대홍기획", "agencyTypes": ["전면대행"], "sheets": ["최종정리", "이전 워크북 (특징·연계 포인트·장소 보강)"]},
   {"id": 75, "company": "엔씨소프트", "industry": "게임", "industryRaw": "게임·콘텐츠·엔터", "title": "'아스트라에 오라티오' 출시", "issueTitleRaw": "아스트라에 오라티오' 출시", "issueType": "게임 / 콘텐츠 출시", "scope": "기업", "periodRaw": "2027년 이후", "periodType": "tbd", "description": "서브컬처 장르 신작.\n엔씨가 퍼블리싱하며 글로벌 시장을 겨냥한 신규 IP.\n2026년 IR 기준 세부 출시일은 미정", "content": "아스트라에 오라티오 (Astrae Oratio)", "agency": "대홍기획", "agencyTypes": ["전면대행"], "sheets": ["최종정리", "이전 워크북 (특징·연계 포인트·장소 보강)"]},
   {"id": 76, "company": "엔씨소프트", "industry": "게임", "industryRaw": "게임·콘텐츠·엔터", "title": "'DEFECT' 출시", "issueTitleRaw": "DEFECT' 출시", "issueType": "게임 / 콘텐츠 출시", "scope": "기업", "periodRaw": "2027년 이후", "periodType": "tbd", "description": "북미 스튜디오 Emptyvessel의 사이버펑크 FPS.\n글로벌 PC·콘솔 시장을 겨냥한 슈팅 신작.\n세부 출시일 미정", "content": "DEFECT", "agency": "대홍기획", "agencyTypes": ["전면대행"], "sheets": ["최종정리", "이전 워크북 (특징·연계 포인트·장소 보강)"]},
@@ -582,8 +581,13 @@ table.tbl{width:100%;border-collapse:collapse;min-width:1100px}
 .ag-box.empty .ag-edit-btn{background:var(--surface);border-color:var(--border-2);color:var(--accent)}
 .ag-editor{border:1px solid var(--border);border-radius:10px;padding:14px;background:var(--surface-2);margin-bottom:14px}
 .ag-editor .ae-label{font-size:11px;font-weight:800;letter-spacing:.08em;color:var(--text-3);margin-bottom:8px}
-.ag-editor input{width:100%;height:38px;border:1px solid var(--border-2);border-radius:8px;background:#fff;padding:0 11px;outline:none;margin-bottom:8px}
-.ag-editor input:focus{border-color:var(--accent-2);box-shadow:0 0 0 3px var(--accent-ring)}
+.ag-editor input,.ag-editor textarea{width:100%;border:1px solid var(--border-2);border-radius:8px;background:#fff;padding:0 11px;outline:none;margin-bottom:8px;font:inherit;color:var(--text)}
+.ag-editor input{height:38px}
+.ag-editor textarea{min-height:82px;padding:9px 11px;resize:vertical;line-height:1.5}
+.ag-editor input:focus,.ag-editor textarea:focus{border-color:var(--accent-2);box-shadow:0 0 0 3px var(--accent-ring)}
+.ag-editor .ae-field{margin-bottom:4px}
+.ag-editor .ae-field label{display:block;font-size:11.5px;font-weight:700;color:var(--text-2);margin:0 0 5px 2px}
+.ag-editor .ae-help{font-size:10.5px;color:var(--text-4);margin:-3px 2px 8px;line-height:1.45}
 .ag-editor .ae-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
 .ag-editor .ae-actions{display:flex;gap:8px;align-items:center;margin-top:3px}
 .ag-editor .ae-save,.ag-editor .ae-cancel{height:34px;border-radius:7px;padding:0 13px;font-size:12px;font-weight:700}
@@ -1396,16 +1400,16 @@ function renderTable() {
 }
 
 /* =========================================================================
-   AGENCY LIVE DB — Google Apps Script / Google Sheets
+   LIVE EDIT DB — Google Apps Script / Google Sheets
+   대행사 · 이슈 시기 · LUUX 제안 포인트 · 내부 메모 공동 수정
    ========================================================================= */
 const AGENCY_API_URL = "https://script.google.com/macros/s/AKfycbxe-dDAL544lSMmsW8-6WsY1N-jWby_lJfKJY3HdiRt2Qvq1sX0chcs-pf5zv2cctycJQ/exec";
 let agencyEditingId = null;
 function agencyApiReady(){ return /^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec(?:\?.*)?$/.test(AGENCY_API_URL); }
 function agencyJsonp(params){
-  // Google Apps Script는 여러 Google 계정이 동시에 로그인된 브라우저에서
-  // /u/N/ 라우팅 충돌이 날 수 있어 authuser를 고정해 우회합니다.
+  // 여러 Google 계정이 로그인된 브라우저에서도 동작하도록 authuser 후보를 자동 시도합니다.
   return new Promise((resolve,reject)=>{
-    if(!agencyApiReady()) return reject(new Error("대행사 DB가 아직 연결되지 않았습니다."));
+    if(!agencyApiReady()) return reject(new Error("공동 수정 DB가 아직 연결되지 않았습니다."));
     const authCandidates=[0,1,2,3];
     let settled=false, pending=authCandidates.length;
     const scripts=[];
@@ -1417,7 +1421,7 @@ function agencyJsonp(params){
       ok?resolve(value):reject(value);
     };
     authCandidates.forEach((authuser,idx)=>{
-      const cb=`__luuxAgencyCb_${Date.now()}_${idx}_${Math.random().toString(36).slice(2)}`;
+      const cb=`__luuxEditCb_${Date.now()}_${idx}_${Math.random().toString(36).slice(2)}`;
       callbacks.push(cb);
       const sc=document.createElement("script"); scripts.push(sc);
       const qs=new URLSearchParams({...params,authuser:String(authuser),callback:cb,_:Date.now()+idx});
@@ -1425,58 +1429,131 @@ function agencyJsonp(params){
       sc.src=`${AGENCY_API_URL}${AGENCY_API_URL.includes("?")?"&":"?"}${qs.toString()}`;
       sc.onerror=()=>{
         pending--;
-        if(!settled && pending<=0) finish(false,new Error("Google 멀티계정 라우팅 문제로 대행사 DB에 연결하지 못했습니다."));
+        if(!settled && pending<=0) finish(false,new Error("Google 계정 연결 문제로 공동 수정 DB에 접속하지 못했습니다."));
       };
       document.head.appendChild(sc);
     });
     setTimeout(()=>{
-      if(!settled) finish(false,new Error("대행사 DB 응답 시간이 초과되었습니다. Google 계정 라우팅을 확인해주세요."));
+      if(!settled) finish(false,new Error("공동 수정 DB 응답 시간이 초과되었습니다. 잠시 후 다시 시도해주세요."));
     },9000);
   });
 }
+
+function parsedPeriod(raw){
+  const s=String(raw||"").trim().replace(/\s+/g," ");
+  if(!s) return null;
+  const periodBase=(type,month,day)=>{
+    const x={periodType:type};
+    if(month){x.month=+month;x.quarter=`Q${Math.ceil(+month/3)}`;x.half=+month<=6?"H1":"H2";}
+    if(day)x.day=+day;
+    return x;
+  };
+  let m;
+  // 2026년 선행 이슈
+  m=s.match(/^2026(?:\.|-|\/)(\d{1,2})(?:(?:\.|-|\/)(\d{1,2}))?/);
+  if(!m) m=s.match(/^2026년\s*(\d{1,2})월(?:\s*(\d{1,2})일)?/);
+  if(m) return {periodType:"pre",year:2026,month:+m[1],...(m[2]?{day:+m[2]}:{})};
+
+  // 2027.01.16 ~ 2027.03.14 / 2027.06 ~ 09
+  m=s.match(/^2027\.(\d{1,2})(?:\.(\d{1,2}))?\s*[~～–—]\s*(?:2027\.)?(\d{1,2})(?:\.(\d{1,2}))?/);
+  if(m){
+    const x=periodBase("range",m[1],m[2]); x.endMonth=+m[3]; if(m[4])x.endDay=+m[4]; return x;
+  }
+  m=s.match(/^2027년\s*(\d{1,2})월(?:\s*(\d{1,2})일)?\s*[~～–—]\s*(?:(?:2027년\s*)?(\d{1,2})월)?(?:\s*(\d{1,2})일)?/);
+  if(m){
+    const x=periodBase("range",m[1],m[2]); if(m[3])x.endMonth=+m[3]; if(m[4])x.endDay=+m[4]; return x;
+  }
+  m=s.match(/^2027년\s*(\d{1,2})월\s*~\s*$/);
+  if(m) return periodBase("range",m[1]);
+
+  // 일자 / 월 확정
+  m=s.match(/^2027(?:\.|-|\/)(\d{1,2})(?:(?:\.|-|\/)(\d{1,2}))?/);
+  if(!m) m=s.match(/^2027년\s*(\d{1,2})월(?:\s*(\d{1,2})일)?/);
+  if(m) return periodBase(m[2]?"date":"month",m[1],m[2]);
+
+  // 분기 / 반기 / 시즌 / 연중 / 정례 / 미정
+  m=s.match(/(?:2027년\s*)?([1-4])분기|\bQ([1-4])\b/i);
+  if(m){const q=+(m[1]||m[2]);return {periodType:"quarter",quarter:`Q${q}`,half:q<=2?"H1":"H2"};}
+  if(/상반기/.test(s)) return {periodType:"half",half:"H1"};
+  if(/하반기/.test(s)) return {periodType:"half",half:"H2"};
+  m=s.match(/(?:2027년\s*)?(봄|여름|가을|연말|설연휴)/);
+  if(m) return {periodType:"season",season:m[1],half:["봄","설연휴"].includes(m[1])?"H1":"H2"};
+  if(/^매년|정례/.test(s)) return {periodType:"recurring",recurLabel:s};
+  if(/미정|2027년 이후/.test(s)) return {periodType:"tbd"};
+  if(/^2027년(?:\s*중|\s*예정)?(?:\s*\(.*\))?$/.test(s) || s==="2027") return {periodType:"year"};
+  return null;
+}
+function applyPeriodOverride(e,raw){
+  const value=String(raw||"").trim();
+  if(!value) return false;
+  const parsed=parsedPeriod(value);
+  e.periodRaw=value;
+  if(!parsed){ e._periodParseWarning=true; derive(e); return false; }
+  ["periodType","year","month","day","endMonth","endDay","endLabel","quarter","half","season","recurLabel","carryOver"].forEach(k=>delete e[k]);
+  Object.assign(e,parsed,{periodRaw:value});
+  delete e._periodParseWarning;
+  derive(e);
+  return true;
+}
 function applyAgencyOverride(row){
-  const e = BY_ID.get(+row.issue_id); if(!e) return;
-  const a = String(row.agency ?? "").trim();
-  if(a) e.agency = a; else delete e.agency;
-  e._agencyUpdatedAt = row.updated_at || "";
-  e._agencyUpdatedBy = row.updated_by || "";
+  const e=BY_ID.get(+row.issue_id); if(!e) return;
+  if(row.agency !== undefined){
+    const a=String(row.agency??"").trim(); if(a)e.agency=a; else delete e.agency;
+  }
+  if(row.period_raw_set && row.period_raw) applyPeriodOverride(e,row.period_raw);
+  if(row.opportunity_set){ const v=String(row.opportunity??"").trim(); if(v)e.opportunity=v; else delete e.opportunity; }
+  if(row.internal_note_set){ e._liveNote=String(row.internal_note??"").trim(); }
+  e._agencyUpdatedAt=row.updated_at||"";
+  e._agencyUpdatedBy=row.updated_by||"";
   derive(e);
 }
 async function loadAgencyOverrides(){
   if(!agencyApiReady()) return;
   try{
     const r=await agencyJsonp({action:"list"});
-    if(!r?.ok) throw new Error(r?.error||"대행사 DB를 불러오지 못했습니다.");
+    if(!r?.ok) throw new Error(r?.error||"공동 수정 DB를 불러오지 못했습니다.");
     (r.rows||[]).forEach(applyAgencyOverride);
     schedule();
-  }catch(err){ console.warn("Agency DB:",err); }
+  }catch(err){ console.warn("Live edit DB:",err); }
 }
 function agencyEditorHTML(e){
   const names=[...new Set(events.flatMap(agenciesFor))].sort((a,b)=>a.localeCompare(b,"ko"));
   return `<div class="ag-editor" data-agency-editor="${e.id}">
-    <div class="ae-label">담당 대행사 수정</div>
-    <input id="agencyEditInput" list="agencyNameList" value="${esc(e.agency||"")}" placeholder="대행사명 입력 · 비워두면 미확인으로 저장">
+    <div class="ae-label">이슈 정보 공동 수정</div>
+    <div class="ae-field"><label for="agencyEditInput">담당 대행사</label><input id="agencyEditInput" list="agencyNameList" value="${esc(e.agency||"")}" placeholder="대행사명 입력 · 비워두면 미확인으로 저장"></div>
     <datalist id="agencyNameList">${names.map(x=>`<option value="${esc(x)}"></option>`).join("")}</datalist>
+    <div class="ae-field"><label for="periodEditInput">이슈 시기</label><input id="periodEditInput" value="${esc(e.periodRaw||"")}" placeholder="예: 2027.09.13 / 2027년 상반기 / 2027년"></div>
+    <div class="ae-help">날짜·월·분기·상/하반기 형식은 저장 즉시 월별·분기별 View에도 반영됩니다.</div>
+    <div class="ae-field"><label for="opportunityEditInput">LUUX 제안 포인트</label><textarea id="opportunityEditInput" maxlength="700" placeholder="영업·제안 포인트 입력">${esc(e.opportunity||"")}</textarea></div>
+    <div class="ae-field"><label for="internalNoteEditInput">내부 메모</label><textarea id="internalNoteEditInput" maxlength="700" placeholder="팀 내부 참고사항 입력">${esc(e._liveNote||"")}</textarea></div>
     <div class="ae-row"><input id="agencyEditorName" placeholder="수정자 이름 (선택)"><input id="agencyEditorPassword" type="password" placeholder="수정 비밀번호"></div>
     <div class="ae-actions"><button class="ae-save" data-action="save-agency" data-edit-id="${e.id}">저장</button><button class="ae-cancel" data-action="cancel-agency" data-edit-id="${e.id}">취소</button><span class="ae-msg" id="agencySaveMsg"></span></div>
-    <div class="ag-sync-note">저장된 대행사 정보는 Google Sheet에 기록되며 다른 사용자가 새로고침하면 동일하게 반영됩니다.</div>
+    <div class="ag-sync-note">저장된 정보는 Google Sheet에 기록되며 다른 사용자가 새로고침하면 동일하게 반영됩니다.</div>
   </div>`;
 }
 async function saveAgencyFromEditor(id){
   const e=BY_ID.get(+id); if(!e) return;
-  const input=$("agencyEditInput"), pw=$("agencyEditorPassword"), who=$("agencyEditorName"), msg=$("agencySaveMsg");
-  if(!agencyApiReady()){ msg.textContent="Apps Script URL 연결이 먼저 필요합니다."; msg.className="ae-msg err"; return; }
-  if(!pw.value){ msg.textContent="수정 비밀번호를 입력해주세요."; msg.className="ae-msg err"; pw.focus(); return; }
+  const agency=$("agencyEditInput"), period=$("periodEditInput"), opp=$("opportunityEditInput"), memo=$("internalNoteEditInput");
+  const pw=$("agencyEditorPassword"), who=$("agencyEditorName"), msg=$("agencySaveMsg");
+  if(!agencyApiReady()){msg.textContent="Apps Script URL 연결이 먼저 필요합니다.";msg.className="ae-msg err";return;}
+  if(!period.value.trim()){msg.textContent="이슈 시기는 비워둘 수 없습니다.";msg.className="ae-msg err";period.focus();return;}
+  const periodChanged=period.value.trim()!==String(e.periodRaw||"").trim();
+  if(periodChanged && !parsedPeriod(period.value)){msg.textContent="시기 형식을 확인해주세요. 예: 2027.09.13 / 2027년 9월 / 2027년 상반기";msg.className="ae-msg err";period.focus();return;}
+  if(!pw.value){msg.textContent="수정 비밀번호를 입력해주세요.";msg.className="ae-msg err";pw.focus();return;}
   const btn=document.querySelector('[data-action="save-agency"]'); if(btn){btn.disabled=true;btn.textContent="저장 중…";}
-  msg.textContent=""; msg.className="ae-msg";
+  msg.textContent="";msg.className="ae-msg";
   try{
-    const r=await agencyJsonp({action:"save",issue_id:e.id,company:e.company,issue_title:e.title,agency:input.value.trim(),updated_by:who.value.trim(),password:pw.value});
+    const r=await agencyJsonp({
+      action:"save",issue_id:e.id,company:e.company,issue_title:e.title,
+      agency:agency.value.trim(),period_raw:period.value.trim(),opportunity:opp.value.trim(),internal_note:memo.value.trim(),
+      updated_by:who.value.trim(),password:pw.value
+    });
     if(!r?.ok) throw new Error(r?.error||"저장에 실패했습니다.");
-    applyAgencyOverride(r.row||{issue_id:e.id,agency:input.value.trim()});
+    applyAgencyOverride(r.row||{issue_id:e.id,agency:agency.value.trim(),period_raw_set:true,period_raw:period.value.trim(),opportunity_set:true,opportunity:opp.value.trim(),internal_note_set:true,internal_note:memo.value.trim()});
     agencyEditingId=null;
     openDetail(e.id,false);
     schedule();
-  }catch(err){ msg.textContent=err.message; msg.className="ae-msg err"; if(btn){btn.disabled=false;btn.textContent="저장";} }
+  }catch(err){msg.textContent=err.message;msg.className="ae-msg err";if(btn){btn.disabled=false;btn.textContent="저장";}}
 }
 
 /* =========================================================================
@@ -1499,16 +1576,16 @@ function openDetail(id, push = true) {
     <div class="p-when"><div><small>일정</small><b>${esc(e._short)}</b></div><div><small>분기</small><b>${qLabel}</b></div>${e._bucket ? `<div><small>시기 구분</small><b>${esc(e._bucket)}</b></div>` : ""}</div>`;
   const O = [["LUUX 제안 포인트", e.opportunity], ["LUUX 연계 포인트", e.linkPoint], ["과거 캠페인", e.pastCampaign]].filter(x => x[1]);
   let b = "";
-  // 대행사 — Google Sheet 공동 수정 지원
+  // 이슈 정보 — Google Sheet 공동 수정 지원
   if (agencyEditingId === e.id) {
     b += agencyEditorHTML(e);
   } else if (e.agency) {
     const types = e.agencyTypes || [];
     b += `<div class="ag-box"><div class="ag-l">담당 대행사</div><div class="ag-n">${esc(e.agency)}</div>
       ${types.length ? `<div class="ag-t">${types.map(x => `<span>${esc(x)}</span>`).join("")}</div>` : `<div class="ag-none">대행 유형 미기재</div>`}
-      <button class="ag-edit-btn" data-action="edit-agency" data-edit-id="${e.id}">✎ 수정</button></div>`;
+      <button class="ag-edit-btn" data-action="edit-agency" data-edit-id="${e.id}">✎ 정보 수정</button></div>`;
   } else {
-    b += `<div class="ag-box empty"><div class="ag-l">담당 대행사</div><div class="ag-n">확인된 대행사 없음</div><button class="ag-edit-btn" data-action="edit-agency" data-edit-id="${e.id}">+ 대행사 추가</button></div>`;
+    b += `<div class="ag-box empty"><div class="ag-l">담당 대행사</div><div class="ag-n">확인된 대행사 없음</div><button class="ag-edit-btn" data-action="edit-agency" data-edit-id="${e.id}">✎ 정보 수정</button></div>`;
   }
   if (O.length) {
     b += `<div class="opp-box"><div class="oh">💡 SALES OPPORTUNITY</div>${O.map(([l, v]) => `<div class="og"><div class="ol">${l}</div><div class="ov">${bullets(v)}</div></div>`).join("")}</div>`;
@@ -1522,7 +1599,7 @@ function openDetail(id, push = true) {
     ["특징", feat, true],
   ].filter(x => x[1]);
   b += `<div class="p-sec">상세 정보</div><dl class="fields">${F.map(([l, v, raw]) => `<dt>${l}</dt><dd>${raw ? v : esc(v)}</dd>`).join("")}</dl>`;
-  if (e.note || e.memo) b += `<div class="p-sec">참고사항</div>${e.memo ? `<div class="note" style="margin-bottom:6px">리스트업 메모: ${esc(e.memo)}</div>` : ""}${e.note ? `<div class="note" style="white-space:pre-line">${esc(e.note)}</div>` : ""}`;
+  if (e.note || e.memo || e._liveNote) b += `<div class="p-sec">참고사항</div>${e._liveNote ? `<div class="note" style="margin-bottom:6px;white-space:pre-line"><b>공동 메모</b><br>${esc(e._liveNote)}</div>` : ""}${e.memo ? `<div class="note" style="margin-bottom:6px">리스트업 메모: ${esc(e.memo)}</div>` : ""}${e.note ? `<div class="note" style="white-space:pre-line">${esc(e.note)}</div>` : ""}`;
   const S = (e.sources || []);
   const D = [
     [S.some(s => !s.url) ? "출처 자료" : "기사 링크", S.length ? `<ul>${S.map(s => `<li>${s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label || "링크")}</a>` : esc(s.label)}</li>`).join("")}</ul>` : ""],
